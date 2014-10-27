@@ -2,7 +2,7 @@ namespace('DashCommunicator');
 
 DashCommunicator.DomManipulator = {
   addPixelsToTop: function(selector, pixelsFromTop) {
-    $(selector).animate({top: pixelsFromTop}, 100);
+    $(selector).animate({top: pixelsFromTop}, 30);
   },
 
   documentHeight: function(_window) {

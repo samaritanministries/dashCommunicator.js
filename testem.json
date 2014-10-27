@@ -1,0 +1,15 @@
+{
+  "framework": "jasmine",
+  "src_files": [
+    "js/scripts/bower_components/zepto/zepto.js",
+    "js/scripts/namespace.js",
+    "js/scripts/dash_communicator/window_getters/current_window_getter.js",
+    "js/scripts/dash_communicator/window_getters/top_window_getter.js",
+    "js/scripts/dash_communicator/post_message_connector.js",
+    "js/scripts/dash_communicator/sender.js",
+    "js/scripts/dash_communicator/dom_manipulator.js",
+    "js/scripts/dash_communicator/receivers/fixed_position_receiver.js",
+    "js/scripts/dash_communicator/receivers/infinite_scroll_receiver.js",
+    "js/spec/**/*.js"
+  ]
+}

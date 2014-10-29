@@ -1,7 +1,7 @@
 describe("DashCommunicator.Receivers.FixedPositionReceiver", function() {
-  var fixedPositionReceiver = function(selector, origin, _window) {
+  var fixedPositionReceiver = function(selector, origin, offset, _window) {
     if (_window === undefined) { _window = {}; };
-    return new DashCommunicator.Receivers.FixedPositionReceiver(selector, origin, _window);
+    return new DashCommunicator.Receivers.FixedPositionReceiver(selector, origin, offset, _window);
   };
 
   it("does nothing if the payload origin is not the same as the injected origin", function() {
@@ -51,13 +51,25 @@ describe("DashCommunicator.Receivers.FixedPositionReceiver", function() {
     expect(topChangeSpy).toHaveBeenCalledWith(selector, 10);
   });
 
+  it("adds pixels to the top with the offset if passed in", function() {
+    var topChangeSpy = spyOn(DashCommunicator.DomManipulator, 'addPixelsToTop');
+    var payload = {
+      origin: 'http://example.com',
+      data:   JSON.stringify({ type: 'fixedPositionOffset', pixelsFromTop: 10})
+    };
+    var selector = '#test'
+    fixedPositionReceiver(selector, 'http://example.com', 30).handle(payload);
+
+    expect(topChangeSpy).toHaveBeenCalledWith(selector, 40);
+  });
+
   it("registers its handler", function() {
     var postMessageConnector = new DashCommunicator.PostMessageConnector({}, function(){});
     var postMessageConnectionSpy = spyOn(DashCommunicator, 'PostMessageConnector').andReturn(postMessageConnector);  
     var registerSpy = spyOn(postMessageConnector, 'register');
     
     var mockWindow = {};
-    var receiver = fixedPositionReceiver('#test', 'http://example.com', mockWindow);
+    var receiver = fixedPositionReceiver('#test', 'http://example.com', undefined, mockWindow);
     receiver.register();
 
     expect(postMessageConnectionSpy).toHaveBeenCalledWith(mockWindow, receiver.handle);
@@ -70,7 +82,7 @@ describe("DashCommunicator.Receivers.FixedPositionReceiver", function() {
     var deregisterSpy = spyOn(postMessageConnector, 'deregister');
     
     var mockWindow = {};
-    var receiver = fixedPositionReceiver('#test', 'http://example.com', mockWindow);
+    var receiver = fixedPositionReceiver('#test', 'http://example.com', undefined, mockWindow);
     receiver.deregister();
 
     expect(postMessageConnectionSpy).toHaveBeenCalledWith(mockWindow, receiver.handle);
